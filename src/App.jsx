@@ -8,6 +8,11 @@ const GuitarScale = () => {
   const [currentNote, setCurrentNote] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [lastMelody, setLastMelody] = useState([]);
+  const [numNotes, setNumNotes] = useState(8);
+
+  const handleNumNotesChange = (event) => {
+    setNumNotes(event.target.value);
+  };
 
   useEffect(() => {
     Soundfont.instrument(new AudioContext(), "acoustic_guitar_steel").then(
@@ -53,12 +58,12 @@ const GuitarScale = () => {
     });
   };
 
-  const playRandomMelody = () => {
+  const playRandomMelody = (numNotes) => {
     setIsPlaying(true);
     const notes = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
     const melody = [];
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < numNotes; i++) {
       const randomNoteIndex = Math.floor(Math.random() * notes.length);
       melody.push(notes[randomNoteIndex]);
     }
@@ -113,9 +118,17 @@ const GuitarScale = () => {
       <button onClick={playReverseCmajorScale} disabled={isPlaying}>
         Play Reverse C Major Scale
       </button>
-      <button onClick={playRandomMelody} disabled={isPlaying}>
-        Play Random Melody
+      <input
+        type="number"
+        min="2"
+        max="14"
+        value={numNotes}
+        onChange={handleNumNotesChange}
+      />
+      <button onClick={() => playRandomMelody(numNotes)} disabled={isPlaying}>
+        Play Random Melody ({numNotes} Notes)
       </button>
+
       <button
         onClick={replayLastMelody}
         disabled={isPlaying || !lastMelody.length}
