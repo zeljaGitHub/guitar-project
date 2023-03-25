@@ -11,7 +11,10 @@ const GuitarScale = () => {
   const [numNotes, setNumNotes] = useState(8);
 
   const handleNumNotesChange = (event) => {
-    setNumNotes(event.target.value);
+    const value = event.target.value;
+    if (value >= 2 && value <= 14) {
+      setNumNotes(value);
+    }
   };
 
   useEffect(() => {
@@ -118,13 +121,7 @@ const GuitarScale = () => {
       <button onClick={playReverseCmajorScale} disabled={isPlaying}>
         Play Reverse C Major Scale
       </button>
-      <input
-        type="number"
-        min="2"
-        max="14"
-        value={numNotes}
-        onChange={handleNumNotesChange}
-      />
+      <input type="number" value={numNotes} onChange={handleNumNotesChange} />
       <button onClick={() => playRandomMelody(numNotes)} disabled={isPlaying}>
         Play Random Melody ({numNotes} Notes)
       </button>
